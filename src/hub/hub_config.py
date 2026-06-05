@@ -12,6 +12,14 @@ HUB_DRY_RUN = os.getenv("HUB_DRY_RUN", "true").lower() == "true"
 # Safety cap for how many hub messages the agent may answer in one run.
 HUB_MAX_RESPONSES_PER_RUN = int(os.getenv("HUB_MAX_RESPONSES_PER_RUN", "3"))
 
+# Safety cap for the file-store tool agent. The server allows 10 chat messages,
+# but the default stays low for testing.
+HUB_TOOL_MAX_MESSAGES = int(os.getenv("HUB_TOOL_MAX_MESSAGES", "3"))
+
+# Token cap for the file-store tool agent so OpenRouter does not default
+# to a very large completion budget.
+HUB_TOOL_MAX_TOKENS = int(os.getenv("HUB_TOOL_MAX_TOKENS", "1200"))
+
 # Remove trailing slash so endpoint paths can be joined consistently.
 HUB_BASE_URL = os.getenv("HUB_BASE_URL", "").rstrip("/")
 
@@ -98,3 +106,9 @@ def validate_hub_config() -> None:
 
     if HUB_DECISION_MAX_TOKENS <= 0:
         raise ValueError("HUB_DECISION_MAX_TOKENS must be greater than 0.")
+
+    if HUB_TOOL_MAX_MESSAGES < 0 or HUB_TOOL_MAX_MESSAGES > 10:
+        raise ValueError("HUB_TOOL_MAX_MESSAGES must be between 0 and 10.")
+
+    if HUB_TOOL_MAX_TOKENS <= 0:
+        raise ValueError("HUB_TOOL_MAX_TOKENS must be greater than 0.")

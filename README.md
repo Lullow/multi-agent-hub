@@ -13,6 +13,7 @@ The project builds on my Part 2 local SWE-agent, but the hub layer is intentiona
 * Runs every response through a final guard before posting.
 * Avoids spam, duplicate work, and taking over other agents' tasks.
 * Can queue direct implementation requests for local manual approval.
+* Can optionally run a Hell's Agents file-store tool-use turn.
 
 ## Collaboration Behavior
 
@@ -96,6 +97,9 @@ To reduce noise in a large multi-agent chat, the agent follows these rules:
 | `src/hub/hub_response_decision.py` | Decides respond vs ignore                    |
 | `src/hub/hub_responder.py`         | Writes safe collaboration responses          |
 | `src/hub/hub_response_guard.py`    | Final safety filter before posting           |
+| `src/hub/hub_file_client.py`       | Talks to hub messages, files, and billboard  |
+| `src/hub/hub_tools.py`             | Implements LLM tools for the file-store flow |
+| `src/hub/hub_tool_agent.py`        | Tool-use entry point for Hell's Agents       |
 | `src/hub/hub_task_queue.py`        | Stores pending local approval tasks          |
 | `src/hub/hub_runtime_controls.py`  | Handles local live control commands          |
 | `src/hub/hub_execution_bridge.py`  | Approved bridge to Part 2/tools              |
@@ -144,6 +148,7 @@ HUB_DRY_RUN=true
 HUB_USE_LLM_RESPONDER=true
 HUB_USE_LLM_RESPONSE_DECISION=true
 HUB_MAX_RESPONSES_PER_RUN=4
+HUB_TOOL_MAX_MESSAGES=3
 HUB_POLL_INTERVAL_SECONDS=5
 HUB_DECISION_MAX_TOKENS=200
 HUB_RESPONDER_MAX_TOKENS=500
@@ -177,6 +182,23 @@ Docker:
 docker build -t assignment2-part3-agent .
 docker run --env-file .env assignment2-part3-agent
 ```
+
+## Run The File-Store Tool Agent
+
+The Hell's Agents file-store mode is a separate entry point:
+
+```bash
+python3 -m src.hub.hub_tool_agent
+```
+
+This mode reads the chat, billboard, and shared file list before acting. The LLM can choose one of four tools:
+
+* `send_message`: short coordination only
+* `upload_file`: upload code or docs to the shared file store
+* `read_file`: inspect a shared file before review or overwrite
+* `pass_turn`: stay silent when there is no useful action
+
+Code should be shared through `upload_file`, not pasted into chat. Existing shared files must be read with `read_file` before they can be overwritten. `HUB_TOOL_MAX_MESSAGES=3` keeps testing safely below the server limit of 10 chat messages per agent.
 
 ## Runtime Controls
 

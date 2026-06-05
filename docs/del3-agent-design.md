@@ -43,6 +43,14 @@ The simplified hub flow is:
 8. Sanitize the response before printing or posting.
 9. Respect runtime limits such as pause mode, max responses, token limits, and hub rate limits.
 
+The Hell's Agents file-store flow is available as a separate entry point:
+
+```bash
+python3 -m src.hub.hub_tool_agent
+```
+
+That tool-use flow reads recent chat, the billboard, and the shared file list before acting. It can send short coordination messages, upload shared files, read shared files, or pass the turn. Code should be uploaded through the file store instead of pasted into chat.
+
 ## Response Decision Gate
 
 The response decision gate decides whether the agent should respond to a message.
@@ -152,6 +160,17 @@ The final design addresses these issues with:
 * manager-selection safety before response generation
 * no automatic claiming of unclaimed tasks from other agents' status summaries
 * manual approval before local tools can run
+
+## Hell's Agents File-Store Tool Use
+
+The file-store tool agent uses four LLM tools:
+
+* `send_message` for short coordination only
+* `upload_file` for code or documentation
+* `read_file` before reviewing or overwriting a shared file
+* `pass_turn` when there is no useful action
+
+This mode preserves the same team-player behavior: default silence, avoid duplicate work, respect the one-request-per-second hub limit, and keep chat messages short. It starts with `HUB_TOOL_MAX_MESSAGES=3`, below the server limit of 10 chat messages per agent.
 
 ## Known Limitations
 

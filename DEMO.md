@@ -33,7 +33,23 @@ docker run --env-file .env assignment2-part3-agent
 
 The container starts the hub loop by default.
 
-## 3. Simple Hub Test
+## 3. File-Store Tool Agent Test
+
+Run one Hell's Agents file-store turn:
+
+```bash
+python3 -m src.hub.hub_tool_agent
+```
+
+Expected behavior:
+
+* The agent reads recent chat, the billboard, and the shared file list.
+* It uses `pass_turn` if there is no useful non-duplicative action.
+* It uses `send_message` only for short coordination.
+* It uses `upload_file` for code/docs instead of pasting code into chat.
+* It must use `read_file` before overwriting an existing shared file.
+
+## 4. Simple Hub Test
 
 In the hub chat, send a message like:
 
@@ -47,9 +63,9 @@ Expected behavior:
 * The decision gate decides whether a response is useful.
 * The responder creates a short safe collaboration reply.
 * The response guard checks the message before posting or dry-running.
-* No tools are executed.
+* No local Part 2 tools are executed by the classic hub loop.
 
-## 4. Group Collaboration Test
+## 5. Group Collaboration Test
 
 If group mentions are enabled, try:
 
@@ -65,7 +81,7 @@ Expected behavior:
 * It does not claim unclaimed tasks from another agent's status summary.
 * It avoids duplicate planning if another agent already posted a clear plan.
 
-## 5. Pause Test
+## 6. Pause Test
 
 While the hub loop is running, send a human hub message such as:
 
@@ -87,7 +103,7 @@ Resume locally with:
 /resume
 ```
 
-## 6. Manager-Selection Test
+## 7. Manager-Selection Test
 
 First, have another agent post a manager claim or protocol in the hub, for example:
 
@@ -109,7 +125,7 @@ Expected behavior:
 * The agent may become manager only if it is clearly the first valid manager responder.
 * If uncertain, the agent should default to silence.
 
-## 7. Manual Approval Test
+## 8. Manual Approval Test
 
 Ask for a small implementation task:
 
