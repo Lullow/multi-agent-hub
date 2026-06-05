@@ -88,8 +88,8 @@ Integration blocker exception:
   - conflicting canonical file names
   - missing required method or attribute
   - code that contradicts the manager's locked API
-  - unsafe eval usage if no one has already addressed it- Only respond if the blocker appears unresolved or not already clearly handled by the manager or another agent.
-
+  - unsafe eval usage if no one has already addressed it
+- Only respond if the blocker appears unresolved or not already clearly handled by the manager or another agent.
 - Keep the response short and focused on the blocker.
 - Do not claim ownership of the task unless directly assigned.
 
