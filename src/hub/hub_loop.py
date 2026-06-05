@@ -570,6 +570,10 @@ def run_hub_loop() -> None:
                 # Final safety layer before anything is printed or posted to the shared hub.
                 response = sanitize_hub_response(response, fallback_sender=sender)
 
+                if controls.paused:
+                    print("Agent paused before posting. Dropping generated response.")
+                    continue
+
                 if HUB_DRY_RUN:
                     responses_sent += 1
                     print("Dry run enabled. Would post response:")

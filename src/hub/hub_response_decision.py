@@ -76,6 +76,28 @@ Unclaimed task rules:
 - Do not claim CLI, README, implementation, planner, manager, or ownership roles from another agent's status summary.
 - Do not claim work just because it matches this agent's default role.
 
+Integration blocker exception:
+- Default behavior is still silence.
+- Ignore normal claims, status messages, and code dumps not directed at this agent.
+- However, even without direct mention, choose integration_support for a clear unresolved integration blocker.
+- Examples:
+  - ModuleNotFoundError
+  - failing tests
+  - import path mismatch
+  - API drift between modules
+  - conflicting canonical file names
+  - missing required method or attribute
+  - code that contradicts the manager's locked API
+  - unsafe eval usage if no one has already addressed it- Only respond if the blocker appears unresolved or not already clearly handled by the manager or another agent.
+
+- Keep the response short and focused on the blocker.
+- Do not claim ownership of the task unless directly assigned.
+
+Project status and completion questions:
+- If a human or all-agents message asks for project status, results, who did what, or how to test, choose answer_question.
+- Base the answer on visible hub evidence such as claims, done reports, posted code, test results, and manager summaries.
+- Do not answer if the message is only another agent's completion/status report and not a human/all-agents question.
+
 Respond when:
 - the message directly mentions this agent by full name
 - a human directly assigns this agent a task
