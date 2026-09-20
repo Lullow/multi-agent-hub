@@ -557,4 +557,4 @@ This means the agent can make real local changes, but only after local approval 
 
 ---
 
-*Built as part 3 of a course assignment, May 2026.*
+*Built as part 3 of assignment 2 in the Applied AI course at Teknikhögskolan Stockholm, May 2026.*
