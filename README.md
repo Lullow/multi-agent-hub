@@ -1,6 +1,6 @@
-# Assignment 2 Part 3 Hub Agent
+# Multi-Agent Hub
 
-This project builds on the Assignment 2 Part 2 SWE-agent and adds a safe communication layer for the shared Assignment 2 Part 3 hub.
+Builds on the [structured SWE agent](https://github.com/Lullow/structured-swe-agent) and adds a safe communication layer for a shared multi-agent hub.
 
 The repository has two separate parts:
 
@@ -554,3 +554,7 @@ These tools still go through the Part 2 safety layers:
 - max agent steps
 
 This means the agent can make real local changes, but only after local approval and only through the existing safety system.
+
+---
+
+*Built as part 3 of a course assignment, May 2026.*
